@@ -93,7 +93,6 @@
 docker run -p 5432:5432 -d --name db arminc/clair-db:latest
 docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan:latest
 
-
 # clair-scanner  설치 (clair 보안 취약점 스캔 기능을 사용하기 위해 clairctl이라는 cli 바이너리 툴 사용)
 wget https://github.com/arminc/clair-scanner/releases/download/v12/clair-scanner_linux_amd64
 
@@ -101,3 +100,24 @@ chmod +x clair-scanner_linux_amd64; sudo mv clair-scanner_linux_amd64 /usr/local
 ```
 
 ## 6. Clair 보안 설정 및 Docker 빌드 스캔 수행
+
+- Clair 보안 설정 및 Docker 빌드 스캔 수행
+  - Clair-scanner 기본 보안 설정을 위한 옵션 확인
+  - Jenkins에서 많이 사용하는 Docker 이미지 스캔 및 결과 확인 (Gradle, AWS-CLI)
+  - Gradle-Jib 예제 Docker 이미지 빌드 스캔 및 결과 확인 (spring boot)
+
+```sh
+# Clair 실행 서버 Private IP 확인
+export IP=$(ip r | tail -n1 | awk '{ print $9 }'); echo ${IP}
+
+# Gradle, AWS-CLI Docker 이미지 스캔 및 결과 확인 명령어
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
+report="gradle_report.txt" <Gradle 이미지명>
+
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
+report="aws-cli_report.txt" <AWS-CLI 이미지명>
+
+# Spring Boot 웹 애플리케이션 Docker 이미지 빌드 보안 스캔 명령어
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
+report="spring-boot-web_report.txt" <예제 Docker 이미지명>
+```

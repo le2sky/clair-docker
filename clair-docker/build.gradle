@@ -39,8 +39,8 @@ jib {
     image = 'adoptopenjdk/openjdk11:alpine-jre'
   }
   to {
-      image = '<AWS ECR URL>/<Image Repository Name>'
-      tags = ['<Image Tag Name>']
+      image = '315199840269.dkr.ecr.ap-northeast-2.amazonaws.com/test'
+      tags = ['1.0']
   }
 	container {
     entrypoint = ['java', '-Dspring.profiles.active=test', '-jar', 'test-docker-spring-boot-0.0.1-SNAPSHOT.jar']
