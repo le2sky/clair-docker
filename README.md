@@ -111,13 +111,17 @@ chmod +x clair-scanner_linux_amd64; sudo mv clair-scanner_linux_amd64 /usr/local
 export IP=$(ip r | tail -n1 | awk '{ print $9 }'); echo ${IP}
 
 # Gradle, AWS-CLI Docker 이미지 스캔 및 결과 확인 명령어
-clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
-report="gradle_report.txt" <Gradle 이미지명>
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --report="gradle_report.txt" gradle:jdk11
 
-clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
-report="aws-cli_report.txt" <AWS-CLI 이미지명>
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --report="aws-cli_report.txt" bitnami/aws-cli:latest
 
 # Spring Boot 웹 애플리케이션 Docker 이미지 빌드 보안 스캔 명령어
-clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --
-report="spring-boot-web_report.txt" <예제 Docker 이미지명>
+clair-scanner --ip ${IP} --clair=http://localhost:6060 --log="clair.log" --report="spring-boot-web_report.txt" <예제 Docker 이미지명>
+```
+
+보안 스캔 테스트 용
+
+```sh
+docker pull gradle:jdk11
+docker pull bitnami/aws-cli:latest
 ```
